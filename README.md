@@ -14,12 +14,14 @@ void reorient(float accX, float accY, float accZ) {
 ```
 
 Once we have our initial orientation, our control loop must run at a high speed (50 to 100Hz) while it constantly performs two actions: (1) transform our local angular velocity to global angular velocity, and (2) integrate the angular velocity to determine orientation in the global frame. The matrix below is used to transform the local velocity to global velocity. In this matrix, [p, q, r] are the vehicle velocity rates, [Φ, Θ, Ψ] are the euler angles, and [Φ dot, Θ dot, Ψ dot] are the euler (world frame) rates.
+
 ![Oops, image not found.](matrix.png)
 
 (For reference, here are how the axes are defined)
+
 ![Oops, image not found.](axes.png)
 
-Finally, with some super dope matrix multiplication, we get the following code:
+Finally, with some super dope matrix multiplication, we get to the core of our code:
 ```
 float velX = velRoll + velPitch * (sin(roll) * tan(pitch)) + velYaw * (cos(roll) * tan(pitch));
 roll = (velX * dt) + lastPosX;
